@@ -1,16 +1,33 @@
 package com.example.diagramapp.service;
 
+import com.example.diagramapp.entity.Diagram;
+import com.example.diagramapp.repository.DiagramRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiagramService {
-    public String saveDiagram(String diagram) {
-        // Здесь будет логика сохранения схемы.
-        return "Diagram saved";
+
+    private final DiagramRepository diagramRepository;
+
+    public DiagramService(DiagramRepository diagramRepository) {
+        this.diagramRepository = diagramRepository;
     }
 
-    public String loadDiagram(Long id) {
-        // Здесь будет логика загрузки схемы по ID.
-        return "{ \"message\": \"Diagram data\" }";
+    public Diagram saveDiagram(String name, String data) {
+        Diagram diagram = new Diagram();
+        diagram.setName(name);
+        diagram.setData(data);
+        return diagramRepository.save(diagram);
+    }
+
+    public Optional<Diagram> loadDiagram(Long id) {
+        return diagramRepository.findById(id);
+    }
+
+    public List<Diagram> getAllDiagrams() {
+        return diagramRepository.findAll();
     }
 }
